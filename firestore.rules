@@ -22,6 +22,10 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    match /projects/{projectId} {
+      allow read, write: if true;
+    }
+
     // Legacy rules (optional but keeping for compatibility)
     match /profile/{docId} {
       allow read: if true;

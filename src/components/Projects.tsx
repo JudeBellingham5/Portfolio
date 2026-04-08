@@ -64,6 +64,10 @@ export default function Projects() {
                         ))}
                       </div>
                       <h3 className="text-2xl text-navy-900 mb-4 group-hover:text-blue-600 transition-colors break-keep">{project.title}</h3>
+                      <div className="flex flex-col gap-1 mb-4 text-sm text-slate-500">
+                        {project.period && <span className="flex items-center gap-1">기간: {project.period}</span>}
+                        {project.personnel && <span className="flex items-center gap-1">인원: {project.personnel}</span>}
+                      </div>
                       <p className="text-slate-600 leading-relaxed mb-6 flex-grow break-keep">
                         {project.summary}
                       </p>
@@ -146,6 +150,20 @@ export default function Projects() {
                           </div>
                         </div>
                         <DialogTitle className="text-2xl md:text-4xl text-navy-900 break-keep">{project.title}</DialogTitle>
+                        <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-slate-500 font-medium">
+                          {project.period && (
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Period</span>
+                              <span>{project.period}</span>
+                            </div>
+                          )}
+                          {project.personnel && (
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Team</span>
+                              <span>{project.personnel}</span>
+                            </div>
+                          )}
+                        </div>
                       </DialogHeader>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">

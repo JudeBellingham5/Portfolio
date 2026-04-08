@@ -32,6 +32,8 @@
       "properties": {
         "title": { "type": "string" },
         "summary": { "type": "string" },
+        "period": { "type": "string", "description": "Project duration" },
+        "personnel": { "type": "string", "description": "Number of people involved" },
         "keywords": { "type": "array", "items": { "type": "string" } },
         "image": { "type": "string" },
         "icon": { "type": "string" },
