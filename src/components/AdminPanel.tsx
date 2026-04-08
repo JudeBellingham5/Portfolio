@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Lock, Save, AlertCircle, Edit3, Plus, Trash2, Loader2, Link as LinkIcon, Image as ImageIcon } from 'lucide-react';
+import { X, Lock, Save, AlertCircle, Edit3, Plus, Trash2, Loader2, Link as LinkIcon, Image as ImageIcon, Copy, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -20,6 +20,7 @@ export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('hero');
   const [isSaving, setIsSaving] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   // Local form states initialized from hook data
   const [localData, setLocalData] = useState(data);
@@ -41,18 +42,23 @@ export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     setIsSaving(true);
-    try {
-      // Ensure we are saving the latest localData
-      await updateData(localData);
-      alert('모든 변경사항이 클라우드에 영구적으로 저장되었습니다!');
-      onClose(); // Close the admin panel to show the portfolio
-    } catch (e) {
-      console.error(e);
-    } finally {
+    // Ensure we are saving the latest localData
+    updateData(localData);
+    
+    // Simulate a small delay for UX feedback
+    setTimeout(() => {
       setIsSaving(false);
-    }
+      alert('변경사항이 브라우저에 저장되었습니다! 배포 시 반영하려면 [Export] 탭의 데이터를 AI에게 전달해주세요.');
+      onClose(); // Close the admin panel to show the portfolio
+    }, 500);
+  };
+
+  const handleCopyData = () => {
+    navigator.clipboard.writeText(JSON.stringify(localData, null, 2));
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -209,12 +215,13 @@ export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
               ) : (
                 <div className="space-y-8">
                   <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-5 mb-8 bg-slate-100 p-1 rounded-xl">
+                    <TabsList className="grid w-full grid-cols-6 mb-8 bg-slate-100 p-1 rounded-xl">
                       <TabsTrigger value="hero" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">Hero</TabsTrigger>
                       <TabsTrigger value="profile" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">Profile</TabsTrigger>
                       <TabsTrigger value="projects" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">Projects</TabsTrigger>
                       <TabsTrigger value="skills" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">Skills</TabsTrigger>
                       <TabsTrigger value="contact" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">Contact</TabsTrigger>
+                      <TabsTrigger value="export" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm text-blue-600 font-bold">Export</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="hero" className="space-y-6">
@@ -488,6 +495,47 @@ export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
                                 ...localData,
                                 contact: { ...localData.contact, email: e.target.value }
                               })}
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+
+                    <TabsContent value="export" className="space-y-6">
+                      <Card className="border-blue-200 bg-blue-50/30 shadow-none">
+                        <CardHeader>
+                          <CardTitle className="text-lg flex items-center gap-2 text-blue-900">
+                            <Save className="w-5 h-5" /> 배포용 데이터 내보내기 (Export)
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="p-4 bg-white border border-blue-100 rounded-xl text-sm text-blue-800 leading-relaxed">
+                            <p className="font-bold mb-2">🚀 Netlify 배포 시 수정 사항을 반영하는 방법:</p>
+                            <ol className="list-decimal list-inside space-y-1 opacity-90">
+                              <li>관리자 페이지에서 내용을 모두 수정합니다.</li>
+                              <li>아래의 <b>[데이터 복사하기]</b> 버튼을 누릅니다.</li>
+                              <li>복사된 내용을 <b>AI 채팅창에 붙여넣고 "이 데이터로 포트폴리오 코드를 업데이트해줘"</b>라고 요청하세요.</li>
+                              <li>AI가 코드를 업데이트하면 Netlify 배포 시 모든 사람에게 수정된 내용이 보입니다.</li>
+                            </ol>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                              <label className="text-xs font-bold text-slate-400 uppercase">JSON Data</label>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={handleCopyData}
+                                className="h-8 gap-2 border-blue-200 text-blue-600 hover:bg-blue-50"
+                              >
+                                {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                                {isCopied ? 'Copied!' : '데이터 복사하기'}
+                              </Button>
+                            </div>
+                            <Textarea 
+                              readOnly 
+                              value={JSON.stringify(localData, null, 2)} 
+                              className="min-h-[200px] font-mono text-[10px] bg-white border-slate-200"
                             />
                           </div>
                         </CardContent>
