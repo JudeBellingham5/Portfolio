@@ -41,17 +41,18 @@ export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsSaving(true);
-    // Ensure we are saving the latest localData
-    updateData(localData);
-    
-    // Simulate a small delay for UX feedback
-    setTimeout(() => {
-      setIsSaving(false);
-      alert('모든 변경사항이 영구적으로 저장되었습니다!');
+    try {
+      // Ensure we are saving the latest localData
+      await updateData(localData);
+      alert('모든 변경사항이 클라우드에 영구적으로 저장되었습니다!');
       onClose(); // Close the admin panel to show the portfolio
-    }, 500);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
