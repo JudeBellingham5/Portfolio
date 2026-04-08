@@ -538,20 +538,43 @@ export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
                       </Card>
                     </TabsContent>
 
-                    <div className="mt-8 pt-6 border-t border-slate-100 flex gap-4">
-                      <Button 
-                        onClick={handleSave} 
-                        disabled={isSaving}
-                        className="flex-grow h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl"
-                      >
-                        {isSaving ? (
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        ) : (
-                          <Save className="w-4 h-4 mr-2" />
-                        )}
-                        Save All Changes
-                      </Button>
-                      <Button variant="outline" onClick={onClose} className="h-12 rounded-xl">Cancel</Button>
+                    <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-4">
+                      <div className="flex gap-4">
+                        <Button 
+                          onClick={handleSave} 
+                          disabled={isSaving}
+                          className="flex-grow h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl"
+                        >
+                          {isSaving ? (
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          ) : (
+                            <Save className="w-4 h-4 mr-2" />
+                          )}
+                          Save All Changes
+                        </Button>
+                        <Button variant="outline" onClick={onClose} className="h-12 rounded-xl">Cancel</Button>
+                      </div>
+                      
+                      <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl space-y-3">
+                        <div className="flex items-start gap-2 text-amber-800">
+                          <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                          <div className="text-sm">
+                            <p className="font-bold">영구 배포 안내</p>
+                            <p>수정한 이미지를 다른 사람들에게도 보여주려면 아래 버튼을 눌러 데이터를 복사한 뒤, <code>src/data/defaultData.ts</code> 파일에 붙여넣고 GitHub에 푸시해야 합니다.</p>
+                          </div>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          className="w-full bg-white border-amber-300 text-amber-900 hover:bg-amber-100"
+                          onClick={() => {
+                            const jsonString = `import { Search, Layers, Palette, Code } from 'lucide-react';\n\nexport const INITIAL_DATA = ${JSON.stringify(localData, null, 2)};`;
+                            navigator.clipboard.writeText(jsonString);
+                            alert('데이터가 클립보드에 복사되었습니다! src/data/defaultData.ts 파일의 전체 내용을 이 내용으로 교체해 주세요.');
+                          }}
+                        >
+                          전체 데이터 코드로 복사하기
+                        </Button>
+                      </div>
                     </div>
                   </Tabs>
                 </div>
