@@ -46,7 +46,7 @@ export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
     try {
       // Ensure we are saving the latest localData
       await updateData(localData);
-      alert('모든 변경사항이 클라우드에 영구적으로 저장되었습니다!');
+      alert('모든 변경사항이 브라우저에 저장되었습니다! 배포 시 이 데이터를 유지하려면 defaultData.ts 파일을 업데이트해야 합니다.');
       onClose(); // Close the admin panel to show the portfolio
     } catch (e) {
       console.error(e);
