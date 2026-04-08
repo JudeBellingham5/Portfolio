@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "profile": {
+      "title": "Profile",
+      "description": "Basic information about the marketer",
+      "type": "object",
+      "properties": {
+        "intro": { "type": "string", "description": "Short introduction" },
+        "birth": { "type": "string", "description": "Birth date" },
+        "education": { "type": "string", "description": "Educational background" },
+        "certifications": { "type": "string", "description": "Certifications" },
+        "training": { "type": "string", "description": "Training and courses" }
+      },
+      "required": ["intro"]
+    },
+    "competency": {
+      "title": "Competency",
+      "description": "A core skill or competency",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "icon": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["title", "description"]
+    },
+    "project": {
+      "title": "Project",
+      "description": "A featured project",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "summary": { "type": "string" },
+        "keywords": { "type": "array", "items": { "type": "string" } },
+        "image": { "type": "string" },
+        "icon": { "type": "string" },
+        "background": { "type": "string" },
+        "role": { "type": "string" },
+        "execution": { "type": "string" },
+        "result": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["title", "summary"]
+    }
+  },
+  "firestore": {
+    "/profile/main": {
+      "schema": "profile",
+      "description": "The main profile document"
+    },
+    "/competencies/{id}": {
+      "schema": "competency",
+      "description": "Collection of competencies"
+    },
+    "/projects/{id}": {
+      "schema": "project",
+      "description": "Collection of projects"
+    }
+  }
+}
