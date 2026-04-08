@@ -21,13 +21,6 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
   const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
-    // 1. Ensure anonymous auth for Firestore access
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        signInAnonymously(auth).catch(console.error);
-      }
-    });
-
     // 2. Listen to Firestore
     const docRef = doc(db, 'settings', 'portfolio');
     const unsubscribeDoc = onSnapshot(docRef, async (snapshot) => {
@@ -64,10 +57,7 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
             };
             setData(merged);
             
-            // Auto-migrate to Firestore if we have auth
-            if (auth.currentUser) {
-              await setDoc(docRef, merged);
-            }
+            // Note: Migration to Firestore will happen when updateData is called
           } catch (e) {
             console.error('Failed to parse local data', e);
           }
@@ -80,7 +70,6 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => {
-      unsubscribeAuth();
       unsubscribeDoc();
     };
   }, []);

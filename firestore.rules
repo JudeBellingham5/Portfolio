@@ -17,16 +17,15 @@ service cloud.firestore {
     // Rules
     // ===============================================================
 
-    // Portfolio content is publicly readable
+    // Portfolio content is publicly readable and writable for this specific setup
     match /settings/portfolio {
-      allow read: if true;
-      allow write: if isAuthenticated();
+      allow read, write: if true;
     }
 
     // Legacy rules (optional but keeping for compatibility)
     match /profile/{docId} {
       allow read: if true;
-      allow write: if isAuthenticated();
+      allow write: if true;
     }
 
     // Default deny
