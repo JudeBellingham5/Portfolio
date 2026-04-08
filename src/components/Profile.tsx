@@ -1,9 +1,9 @@
 import { motion } from 'motion/react';
 import { Calendar, GraduationCap, Award, BookOpen } from 'lucide-react';
-import { usePortfolioData } from '../hooks/usePortfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export default function Profile() {
-  const { data, isLoaded } = usePortfolioData();
+  const { data, isLoaded } = usePortfolio();
 
   if (!isLoaded) return null;
 

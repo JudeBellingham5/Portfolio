@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { usePortfolioData } from '../hooks/usePortfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -14,7 +14,7 @@ interface AdminPanelProps {
 }
 
 export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
-  const { data, updateData, isLoaded } = usePortfolioData();
+  const { data, updateData, isLoaded } = usePortfolio();
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');

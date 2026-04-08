@@ -8,10 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { usePortfolioData } from '../hooks/usePortfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export default function Projects() {
-  const { data, isLoaded } = usePortfolioData();
+  const { data, isLoaded } = usePortfolio();
 
   if (!isLoaded) return null;
 

@@ -3,10 +3,10 @@ import { Mail, Github, Globe, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { usePortfolioData } from '../hooks/usePortfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export default function Contact() {
-  const { data, isLoaded } = usePortfolioData();
+  const { data, isLoaded } = usePortfolio();
 
   if (!isLoaded) return null;
 

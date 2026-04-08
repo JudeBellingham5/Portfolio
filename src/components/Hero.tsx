@@ -2,10 +2,10 @@ import { motion } from 'motion/react';
 import { ArrowRight, BarChart3, Github } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { usePortfolioData } from '../hooks/usePortfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export default function Hero() {
-  const { data, isLoaded } = usePortfolioData();
+  const { data, isLoaded } = usePortfolio();
 
   if (!isLoaded) return null;
 

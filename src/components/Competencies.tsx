@@ -8,7 +8,7 @@ import {
   PieChart, 
   Lightbulb 
 } from 'lucide-react';
-import { usePortfolioData } from '../hooks/usePortfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 const iconMap = [
   Terminal, 
@@ -21,7 +21,7 @@ const iconMap = [
 ];
 
 export default function Competencies() {
-  const { data, isLoaded } = usePortfolioData();
+  const { data, isLoaded } = usePortfolio();
 
   if (!isLoaded) return null;
 
